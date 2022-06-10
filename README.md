@@ -9,8 +9,8 @@ Com exceção do requisito 3, **todos** os outros requisitos deverão ser feitos
 
 ```json
 [
-  {"id":"1","name":"Homer Simpson"},
-  {"id":"2","name":"Marge Simpson"}
+  {"id":"1","nome":"Homer Simpson"},
+  {"id":"2","nome":"Marge Simpson"}
 ]
 ```
 
@@ -21,7 +21,7 @@ Com exceção do requisito 3, **todos** os outros requisitos deverão ser feitos
 - O endpoint deve retornar um personagem com base no id da rota. Devendo retornar o `status 200` ao fazer uma requisição `/simpsons/1`, com o seguinte corpo:
 
   ```json
-  {"id":"1","name":"Homer Simpson"}
+  {"id":"1","nome":"Homer Simpson"}
   ```
 
 - Caso não seja encontrada um personagem com base no id da rota, o endpoint deve retornar o `status 404` com o seguinte corpo:
@@ -111,7 +111,7 @@ As regras de validação são:
 
   ```json
   {
-    "name": "Danielle Santos",
+    "nome": "Danielle Santos",
   }
   ```
 
@@ -133,13 +133,13 @@ As regras de validação são:
     }
     ```
 
-- O campo `name` deverá ter no mínimo 3 caracteres. Ele é obrigatório.
+- O campo `nome` deverá ter no mínimo 3 caracteres. Ele é obrigatório.
 
   - Caso o campo não seja passado ou esteja vazio retorne um código de `status 400`, com o seguinte corpo:
 
     ```json
     {
-      "message": "O campo \"name\" é obrigatório"
+      "message": "O campo \"nome\" é obrigatório"
     }
     ```
 
@@ -147,7 +147,7 @@ As regras de validação são:
 
     ```json
     {
-      "message": "O \"name\" deve ter pelo menos 3 caracteres"
+      "message": "O \"nome\" deve ter pelo menos 3 caracteres"
     }
     ```
 
@@ -158,7 +158,7 @@ As regras de validação são:
   ```json
   {
     "id": 10,
-    "name": "Milhouse",
+    "nome": "Milhouse",
   }
   ```
 
@@ -172,7 +172,7 @@ As regras de validação são:
 
   ```json
   {
-    "name": "Lisa",
+    "nome": "Lisa",
   }
   ```
   
@@ -194,13 +194,13 @@ As regras de validação são:
     }
     ```
 
-- O campo `name` deverá ter no mínimo 3 caracteres. Ele é obrigatório.
+- O campo `nome` deverá ter no mínimo 3 caracteres. Ele é obrigatório.
 
   - Caso o campo não seja passado ou esteja vazio retorne um código de `status 400`, com o seguinte corpo:
 
     ```json
     {
-      "message": "O campo \"name\" é obrigatório"
+      "message": "O campo \"nome\" é obrigatório"
     }
     ```
 
@@ -208,7 +208,7 @@ As regras de validação são:
 
     ```json
     {
-      "message": "O \"name\" ter pelo menos 3 caracteres"
+      "message": "O \"nome\" ter pelo menos 3 caracteres"
     }
     ```
 
@@ -218,7 +218,7 @@ As regras de validação são:
   ```json
   {
     "id": 1,
-    "name": "Lisa",
+    "nome": "Lisa",
   }
   ```
 ### 7 - Crie o endpoint DELETE `/simpsons/:id`
@@ -259,11 +259,11 @@ As regras de validação são:
   [
     {
       "id": 1,
-      "name": "Homes",
+      "nome": "Homes",
     },
     {
       "id": 5,
-      "name": "Milhouse",
+      "nome": "Milhouse",
     } 
   ]
   ```
