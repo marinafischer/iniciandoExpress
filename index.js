@@ -3,6 +3,7 @@ const app = express()
 const port = 3000
 const {readFile, writeFile} = require('fs').promises
 const dataMiddleware = require('./middlewares/dataMiddleware');
+const errorMiddleware = require('./middlewares/errorMiddleware');
 
 app.use(express.json());
 
@@ -12,20 +13,18 @@ app.get('/', async (_request, res) => {
     const simpsons = await readFile('./simpson.json', 'utf8');
     return res.status(200).send(simpsons)
   } catch (error) {
-    return res.status(400).json({message:"algo deu errado"}) 
+    next(error) 
   }
 });
 
 app.get('/:id', async (req, res) => {
   const {id} = req.params;
-  console.log(id);
   //logica para consultar o banco do id especificado
   res.status(201).end();
 });
 
 app.post('/', dataMiddleware, 
   (req, res, next)=> {
-  console.log('entrei no 2')
   next();
 }, 
   async (req, res) => {
@@ -38,7 +37,7 @@ app.post('/', dataMiddleware,
       writeFile('./simpson.json', JSON.stringify(data))
       return res.status(201).json({mensagem:'simpson criado com sucesso'})
     } catch (error) {
-      return res.status(400).json({message:"algo deu errado"}) 
+      next(error)
     }
   }
 );
@@ -48,5 +47,7 @@ app.post('/', dataMiddleware,
 
 // app.put('/', (req, res) => res.send('entrou na rota put'));
 // app.delete('/', (req, res) => res.send('entrou na rota delete'));
+
+app.use(errorMiddleware);
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
