@@ -111,7 +111,7 @@ As regras de validação são:
 
   ```json
   {
-    "nome": "Danielle Santos",
+    "nome": "Milhouse",
   }
   ```
 
@@ -157,7 +157,7 @@ As regras de validação são:
 
   ```json
   {
-    "id": 10,
+    "id": 3,
     "nome": "Milhouse",
   }
   ```
