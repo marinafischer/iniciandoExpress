@@ -1,53 +1,57 @@
-const express = require('express');
+const express = require('express')
 const app = express()
 const port = 3000
-const {readFile, writeFile} = require('fs').promises
-const dataMiddleware = require('./middlewares/dataMiddleware');
-const errorMiddleware = require('./middlewares/errorMiddleware');
+const readFIle = require('./helpers/readFile');
+const {randomUUID} =require('crypto');
+const loginMiddleware = require('./middlewares/loginMiddleware');
+const authorizationMiddleware = require('./middlewares/authorizationMiddleware');
+const nomeMiddleware = require('./middlewares/nomeMiddleware');
+const writeFIle = require('./helpers/writeFile');
 
 app.use(express.json());
 
-app.get('/', async (_request, res) => {
-  //logica para consultar o banco - no json retorna os dados do banco
-  try {
-    const simpsons = await readFile('./simpson.json', 'utf8');
-    return res.status(200).send(simpsons)
-  } catch (error) {
-    next(error) 
-  }
-});
-
-app.get('/:id', async (req, res) => {
+app.get('/simpsons/:id', async (req,res)=>{
   const {id} = req.params;
-  //logica para consultar o banco do id especificado
-  res.status(201).end();
+  try {
+    const simpsons = await readFIle();
+    const simpson = simpsons.find((personagem)=> personagem.id === id);
+    if(simpson) return res.status(200).json(simpson);
+    return res.status(400).json({message: "Personagem não encontrada"})
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({message: 'deu algo errado'});
+  }
 });
 
-app.post('/', dataMiddleware, 
-  (req, res, next)=> {
-  next();
-}, 
-  async (req, res) => {
-    try {
-      const simpsons = await readFile('./simpson.json', 'utf8');
-      const novoSimpson = req.body;
-      const data = [...JSON.parse(simpsons), novoSimpson];
-      // data.push(novoSimpson)
-      // const newData = [...data, novoSimpson]
-      writeFile('./simpson.json', JSON.stringify(data))
-      return res.status(201).json({mensagem:'simpson criado com sucesso'})
-    } catch (error) {
-      next(error)
-    }
+app.get('/simpsons', async (req,res)=>{
+  try {
+    const simpsons = await readFIle();
+    res.status(200).json(simpsons);
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({message: 'deu algo errado'});
   }
-);
+});
 
+app.post('/login', loginMiddleware ,(req,res)=>{
+  const token = randomUUID().split('-').join('').substring(0,20);
+  res.status(200).json({token});
+})
 
+app.post('/simpsons', authorizationMiddleware,nomeMiddleware, async (req,res)=>{
+  const {nome} = req.body;
+  try {
+    const simpsons = await readFIle();
+    simpsons.push({id:simpsons.length+1,nome})
+    writeFIle(simpsons)
+    res.status(200).json(simpsons);
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({message: 'deu algo errado'});
+  }
+})
 
+app.get('/', (req, res) => res.send('Hello World!'));
 
-// app.put('/', (req, res) => res.send('entrou na rota put'));
-// app.delete('/', (req, res) => res.send('entrou na rota delete'));
-
-app.use(errorMiddleware);
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
