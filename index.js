@@ -7,16 +7,18 @@ const loginMiddleware = require('./middlewares/loginMiddleware');
 const authorizationMiddleware = require('./middlewares/authorizationMiddleware');
 const nomeMiddleware = require('./middlewares/nomeMiddleware');
 const writeFIle = require('./helpers/writeFile');
+const errorMiddleware = require('./middlewares/errorMiddleware');
 
 app.use(express.json());
 
-app.get('/simpsons/:id', async (req,res)=>{
+app.get('/simpsons/:id', async (req,res, next)=>{
   const {id} = req.params;
   try {
     const simpsons = await readFIle();
     const simpson = simpsons.find((personagem)=> personagem.id === id);
     if(simpson) return res.status(200).json(simpson);
-    return res.status(400).json({message: "Personagem não encontrada"})
+    // res.status(400).json({message: "Personagem não encontrada"})
+    return next('0')
   } catch (error) {
     console.log(error);
     res.status(400).json({message: 'deu algo errado'});
@@ -52,6 +54,8 @@ app.post('/simpsons', authorizationMiddleware,nomeMiddleware, async (req,res)=>{
 })
 
 app.get('/', (req, res) => res.send('Hello World!'));
+
+app.use(errorMiddleware);
 
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
