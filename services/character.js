@@ -5,4 +5,10 @@ const getAll = async () => {
   return data;
 };
 
-module.exports = {getAll}
+const getById = async (id) => {
+  const [data] = await characterModel.getById(id);
+  if (data === undefined) throw {error: 'personagem não econtrado'}
+  return data;
+}
+
+module.exports = {getAll, getById}

@@ -6,4 +6,10 @@ const getAll = async () => {
   return data;
 }
 
-module.exports = {getAll}
+const getById = async (id) => {
+  const query = 'SELECT * FROM characters WHERE id=?;';
+  const [data] = await connections.execute(query, [id]);
+  return data;
+}
+
+module.exports = {getAll, getById}
