@@ -1,4 +1,5 @@
 const characterModel = require('../model/character');
+const error = require('../helpers/errorObject');
 
 const getAll = async () => {
   const data = await characterModel.getAll();
@@ -7,7 +8,7 @@ const getAll = async () => {
 
 const getById = async (id) => {
   const [data] = await characterModel.getById(id);
-  if (data === undefined) throw {error: 'personagem não econtrado'}
+  if (data === undefined) throw error[0];
   return data;
 }
 
