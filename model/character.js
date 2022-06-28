@@ -12,4 +12,12 @@ const getById = async (id) => {
   return data;
 }
 
-module.exports = {getAll, getById}
+const insert = async (name) => {
+  const query = 'INSERT INTO characters (name) VALUES (?);'
+  const [data] = await connections.execute(query, [name]);
+  const {insertId}= data;
+  // return data
+  return insertId;
+}
+
+module.exports = {getAll, getById, insert}

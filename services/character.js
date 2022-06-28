@@ -12,4 +12,10 @@ const getById = async (id) => {
   return data;
 }
 
-module.exports = {getAll, getById}
+const insert = async (name) => {
+  const data = await characterModel.insert(name);
+  // const resposta = {id: data.insertId, nome:name}
+  return {id: data, nome:name};
+}
+
+module.exports = {getAll, getById, insert}

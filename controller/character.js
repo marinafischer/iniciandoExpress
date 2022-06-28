@@ -19,4 +19,14 @@ const getById = async (req,res, next)=> {
   }
 }
 
-module.exports = {getAll, getById}
+const insert = async (req, res, next) => {
+  const {nome} = req.body;
+  try {
+    const data = await characterService.insert(nome);
+    return res.status(200).json(data);
+  } catch (error) {
+    return res.status(400).json('deu ruim')
+  }
+}
+
+module.exports = {getAll, getById, insert}
